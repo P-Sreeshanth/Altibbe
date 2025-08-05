@@ -3,9 +3,12 @@ import { ProductFormData, AIQuestion, TransparencyReport } from '../types/produc
 
 // Frontend-only mode detection
 export const isStaticMode = () => {
+  console.log('Checking static mode. Hostname:', window.location.hostname);
   // Only enable static mode for actual static hosting platforms
-  return window.location.hostname.includes('github.io') || 
+  const result = window.location.hostname.includes('github.io') || 
          (window.location.hostname.includes('netlify.app') && !window.location.hostname.includes('functions'));
+  console.log('Static mode result:', result);
+  return result;
 };
 
 // Mock data for static deployment
@@ -71,9 +74,15 @@ export const mockApiRequest = async (url: string, options?: RequestInit) => {
 
 export const productApi = {
   create: async (data: ProductFormData) => {
+    console.log('Creating product with data:', data);
+    console.log('isStaticMode():', isStaticMode());
+    console.log('Current hostname:', window.location.hostname);
+    
     if (isStaticMode()) {
+      console.log('Using mock API');
       return await mockApiRequest('/api/products', { method: 'POST', body: JSON.stringify(data) });
     }
+    console.log('Using real API');
     const response = await apiRequest('POST', '/api/products', data);
     return response.json();
   },
