@@ -33,8 +33,18 @@ Your built application is in the `dist/public/` folder with these files:
 
 ## GitHub Pages Settings
 1. Go to Settings > Pages in your GitHub repository
-2. Set Source to "Deploy from a branch" 
-3. Select the `gh-pages` branch (created by the workflow)
-4. Save
+2. Set Source to "GitHub Actions" (not "Deploy from a branch")
+3. The workflow will automatically deploy when you push to main
+
+## Troubleshooting Current Error
+The deployment is failing due to permissions. To fix:
+
+1. Go to Settings > Actions > General in your repository
+2. Scroll to "Workflow permissions"
+3. Select "Read and write permissions"
+4. Check "Allow GitHub Actions to create and approve pull requests"
+5. Save
+
+Then re-run the failed workflow or push a new commit.
 
 Your site will be available at: `https://yourusername.github.io/repositoryname/`
