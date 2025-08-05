@@ -1,0 +1,40 @@
+# GitHub Pages Deployment Guide
+
+## Quick Fix for Current Deployment
+
+Your CSS and JavaScript files aren't loading because they use absolute paths (`/assets/`) instead of relative paths (`./assets/`). 
+
+### Option 1: Manual Fix (Immediate)
+1. Download your `dist/public/index.html` file
+2. Edit it to change:
+   - `href="/assets/` to `href="./assets/`
+   - `src="/assets/` to `src="./assets/`
+   - `href="/favicon.svg"` to `href="./favicon.svg"`
+3. Re-upload the fixed file
+
+### Option 2: Automated Deployment (Recommended)
+I've created a GitHub Actions workflow that will:
+1. Build your project automatically
+2. Fix the asset paths 
+3. Deploy to GitHub Pages
+
+To use this:
+1. Copy the `.github/workflows/deploy.yml` file to your repository
+2. Push to your main branch
+3. Enable GitHub Pages in your repository settings
+4. Set source to "GitHub Actions"
+
+## Current Build Files
+Your built application is in the `dist/public/` folder with these files:
+- `index.html` (now fixed with relative paths)
+- `assets/index-DFqie_9T.css` (your styles)
+- `assets/index-DP6YX9vQ.js` (your app)
+- `favicon.svg` (your icon)
+
+## GitHub Pages Settings
+1. Go to Settings > Pages in your GitHub repository
+2. Set Source to "Deploy from a branch" 
+3. Select the `gh-pages` branch (created by the workflow)
+4. Save
+
+Your site will be available at: `https://yourusername.github.io/repositoryname/`
