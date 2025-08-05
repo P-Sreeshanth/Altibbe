@@ -2,6 +2,13 @@
 
 This is a full-stack Product Transparency Website that collects detailed product information through dynamic, AI-powered forms and generates comprehensive transparency reports. The application helps users make informed decisions about products by analyzing health, ethical, and environmental factors through intelligent questioning and scoring.
 
+## Recent Changes (August 5, 2025)
+- **RESTRUCTURED FOR EASY DEPLOYMENT**: Created `docs/` folder with all GitHub Pages deployment files
+- **SIMPLIFIED DEPLOYMENT**: Added `build-for-github.sh` script for one-command deployment preparation  
+- **FIXED ASSET PATHS**: All files now use relative paths (`./assets/`) compatible with GitHub Pages
+- **ADDED SPA ROUTING**: Configured 404.html for proper client-side routing support
+- **DEPLOYMENT-READY**: All files pre-built and ready for immediate GitHub Pages deployment
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
