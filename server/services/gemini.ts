@@ -27,6 +27,66 @@ export async function generateFollowUpQuestions(
   description?: string,
   existingAnswers: Record<string, any> = {}
 ): Promise<AIQuestion[]> {
+  // Fallback questions based on category
+  const getFallbackQuestions = (category: string): AIQuestion[] => {
+    const baseQuestions: AIQuestion[] = [
+      {
+        question: "What are the main ingredients or components of this product?",
+        type: "textarea"
+      },
+      {
+        question: "Where is this product manufactured or sourced from?",
+        type: "text"
+      },
+      {
+        question: "Does this product have any certifications or quality standards?",
+        type: "select",
+        options: ["Organic", "Fair Trade", "FDA Approved", "ISO Certified", "None", "Other"]
+      }
+    ];
+
+    const categorySpecific: Record<string, AIQuestion[]> = {
+      "supplements": [
+        {
+          question: "What is the recommended dosage and frequency?",
+          type: "text"
+        },
+        {
+          question: "Are there any known side effects or contraindications?",
+          type: "textarea"
+        },
+        {
+          question: "Is this product third-party tested for purity?",
+          type: "select",
+          options: ["Yes", "No", "Unknown"]
+        }
+      ],
+      "food": [
+        {
+          question: "What preservatives or additives are used?",
+          type: "textarea"
+        },
+        {
+          question: "What is the shelf life and storage requirements?",
+          type: "text"
+        }
+      ],
+      "cosmetics": [
+        {
+          question: "Is this product tested on animals?",
+          type: "select",
+          options: ["Yes", "No", "Unknown"]
+        },
+        {
+          question: "What are the active ingredients?",
+          type: "textarea"
+        }
+      ]
+    };
+
+    return [...baseQuestions, ...(categorySpecific[category.toLowerCase()] || [])];
+  };
+
   try {
     const prompt = `You are an expert product transparency analyst. Based on the following product information, generate 3-5 intelligent follow-up questions that will help assess the product's transparency, health impact, ethical sourcing, and environmental footprint.
 
@@ -158,7 +218,27 @@ Scoring guidelines:
     };
   } catch (error) {
     console.error('Error calculating transparency score:', error);
-    throw new Error('Failed to calculate transparency score');
+    
+    // Return fallback scoring based on simple heuristics
+    const answerCount = productData.questions.length;
+    const hasAnswers = productData.questions.some(q => q.answer && q.answer.trim().length > 0);
+    
+    const baseScore = hasAnswers ? 45 : 25; // Base score if we have any answers
+    const answerBonus = Math.min(answerCount * 5, 25); // Up to 25 bonus points for more answers
+    
+    return {
+      transparencyScore: Math.min(baseScore + answerBonus, 85),
+      healthScore: Math.min(baseScore + answerBonus - 5, 80),
+      ethicalScore: Math.min(baseScore + answerBonus - 10, 75),
+      environmentalScore: Math.min(baseScore + answerBonus - 10, 75),
+      keyFindings: [
+        `Product ${productData.name} in ${productData.category} category`,
+        `${answerCount} transparency questions answered`,
+        hasAnswers ? "Some product information provided" : "Limited product information available",
+        "Analysis based on available data - connect AI service for detailed scoring"
+      ],
+      recommendations: "To improve transparency score, provide more detailed information about ingredients, sourcing, manufacturing processes, and sustainability practices. Consider obtaining relevant certifications."
+    };
   }
 }
 
