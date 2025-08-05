@@ -95,6 +95,8 @@ export const insertProductSchema = createInsertSchema(products).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+}).partial({
+  userId: true,
 });
 
 export const insertQuestionSchema = createInsertSchema(questions).omit({

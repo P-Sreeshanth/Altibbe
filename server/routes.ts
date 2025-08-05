@@ -11,12 +11,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Create a new product
   app.post("/api/products", async (req, res) => {
     try {
+      console.log("Received product data:", JSON.stringify(req.body, null, 2));
       const validatedData = insertProductSchema.parse(req.body);
+      console.log("Validated data:", JSON.stringify(validatedData, null, 2));
       const product = await storage.createProduct(validatedData);
       res.json(product);
     } catch (error) {
       console.error("Error creating product:", error);
-      res.status(400).json({ message: "Invalid product data", error: error instanceof Error ? error.message : "Unknown error" });
+      if (error instanceof z.ZodError) {
+        console.error("Validation errors:", error.errors);
+        res.status(400).json({ 
+          message: "Invalid product data", 
+          error: error.errors,
+          received: req.body 
+        });
+      } else {
+        res.status(400).json({ message: "Invalid product data", error: error instanceof Error ? error.message : "Unknown error" });
+      }
     }
   });
 
