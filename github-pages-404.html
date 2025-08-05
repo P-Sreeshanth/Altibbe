@@ -12,8 +12,23 @@
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <script type="module" crossorigin src="./assets/index-DP6YX9vQ.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-DFqie_9T.css">
+    <script>
+      // GitHub Pages SPA redirect
+      // This script redirects 404 pages to the main app for client-side routing
+      sessionStorage.redirect = location.href;
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Handle GitHub Pages SPA redirects
+      (function() {
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+        if (redirect && redirect != location.href) {
+          history.replaceState(null, null, redirect);
+        }
+      })();
+    </script>
   </body>
 </html>
