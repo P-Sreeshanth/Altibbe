@@ -1,0 +1,51 @@
+const validateSubmission = () => {
+  // Ensure all required fields are filled
+  if (!product || product.trim() === '') {
+    setError('Product name is required');
+    return false;
+  }
+  
+  if (questionsAnswered === 0) {
+    setError('At least one question must be answered');
+    return false;
+  }
+  
+  return true;
+};
+
+const generateReport = async () => {
+  if (!validateSubmission()) {
+    return;
+  }
+  
+  try {
+    setLoading(true);
+    setError(null);
+    
+    const response = await fetch('/api/generate-report', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        product,
+        brand,
+        category,
+        answers: submissionData
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    // Handle successful generation
+    
+  } catch (error) {
+    setError('Failed to generate report. Please try again.');
+    console.error('Report generation error:', error);
+  } finally {
+    setLoading(false);
+  }
+};

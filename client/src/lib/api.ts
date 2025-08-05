@@ -3,11 +3,9 @@ import { ProductFormData, AIQuestion, TransparencyReport } from '../types/produc
 
 // Frontend-only mode detection
 export const isStaticMode = () => {
-  // Check if we're on GitHub Pages or similar static hosting
+  // Only enable static mode for actual static hosting platforms
   return window.location.hostname.includes('github.io') || 
-         window.location.hostname.includes('netlify.app') ||
-         window.location.hostname.includes('vercel.app') ||
-         !window.location.hostname.includes('localhost');
+         (window.location.hostname.includes('netlify.app') && !window.location.hostname.includes('functions'));
 };
 
 // Mock data for static deployment
