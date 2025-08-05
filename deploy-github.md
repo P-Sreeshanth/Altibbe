@@ -26,10 +26,17 @@ To use this:
 
 ## Current Build Files
 Your built application is in the `dist/public/` folder with these files:
-- `index.html` (now fixed with relative paths)
+- `index.html` (now fixed with relative paths + SPA routing)
+- `404.html` (handles client-side routing for GitHub Pages)
 - `assets/index-DFqie_9T.css` (your styles)
 - `assets/index-DP6YX9vQ.js` (your app)
 - `favicon.svg` (your icon)
+
+## GitHub Pages SPA Routing Fix
+I've added proper Single Page Application (SPA) routing support:
+- Created a `404.html` file that redirects to the main app
+- Added redirect handling script to `index.html`
+- This ensures all routes (like `/product-form`, `/report/123`) work properly on GitHub Pages
 
 ## GitHub Pages Settings
 1. Go to Settings > Pages in your GitHub repository
