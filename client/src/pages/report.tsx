@@ -26,6 +26,24 @@ export default function Report() {
   const { data: report, isLoading: reportLoading, error: reportError } = useQuery({
     queryKey: ['/api/reports', reportId],
     queryFn: async () => {
+      // For static mode, return demo report
+      if (window.location.hostname.includes('github.io')) {
+        return {
+          id: reportId,
+          productId: 'demo-product',
+          transparencyScore: 78,
+          healthScore: 85,
+          ethicalScore: 72,
+          environmentalScore: 81,
+          keyFindings: [
+            "Product shows strong commitment to health standards",
+            "Ethical sourcing practices are well documented", 
+            "Environmental impact is moderate with room for improvement"
+          ],
+          recommendations: "Consider implementing more sustainable packaging solutions and enhancing supply chain transparency.",
+          createdAt: new Date().toISOString()
+        };
+      }
       const response = await fetch(`/api/reports/${reportId}`);
       if (!response.ok) throw new Error('Report not found');
       return response.json();
@@ -38,6 +56,17 @@ export default function Report() {
     queryKey: ['/api/products', report?.productId],
     queryFn: async () => {
       if (!report?.productId) return null;
+      // For static mode, return demo product
+      if (window.location.hostname.includes('github.io')) {
+        return {
+          id: report.productId,
+          name: 'Demo Product',
+          brand: 'Demo Brand',
+          category: 'Supplements',
+          description: 'This is a demonstration of the transparency report feature.',
+          createdAt: new Date().toISOString()
+        };
+      }
       const response = await fetch(`/api/products/${report.productId}`);
       if (!response.ok) throw new Error('Product not found');
       return response.json();

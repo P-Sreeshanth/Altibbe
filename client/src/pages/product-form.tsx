@@ -8,6 +8,7 @@ import { ProductFormData, AIQuestion, FormStep } from "@/types/product";
 import { MultiStepForm } from "@/components/ui/multi-step-form";
 import { ProductFormStep } from "@/components/forms/product-form-step";
 import { AIQuestions } from "@/components/forms/ai-questions";
+import { DemoBanner } from "@/components/ui/demo-banner";
 import { useToast } from "@/hooks/use-toast";
 import { productApi, questionApi } from "@/lib/api";
 
